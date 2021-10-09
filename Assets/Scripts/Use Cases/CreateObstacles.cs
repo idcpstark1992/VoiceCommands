@@ -22,20 +22,27 @@ public class CreateObstacles : MonoBehaviour
     void OnStartGame()
     {
         CurrentIndex = 0;
-        InvokeRepeating("InstantiateObstacles", 3, 4f);
+        InvokeRepeating("InstantiateObstacles",0, 4f);
     }
     private void InstantiateObstacles()
     {
-        if(CurrentIndex < ObjectsArray.Length)
+        if (!SharedStates.isGameOver)
         {
-            ObjectsArray[CurrentIndex].gameObject.SetActive(true);
-            CurrentIndex++;
+            if (CurrentIndex < ObjectsArray.Length)
+            {
+                ObjectsArray[CurrentIndex].gameObject.SetActive(true);
+                CurrentIndex++;
+            }
+            else
+            {
+                CancelInvoke();
+            }
         }
         else
         {
             CancelInvoke();
         }
         
+        
     }
 }
-    

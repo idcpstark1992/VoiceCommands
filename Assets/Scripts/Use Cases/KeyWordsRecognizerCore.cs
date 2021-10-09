@@ -27,7 +27,9 @@ public class KeyWordsRecognizerCore : MonoBehaviour
         builder.AppendFormat("\tTimestamp: {0}{1}", _args.phraseStartTime, Environment.NewLine);
         builder.AppendFormat("\tDuration: {0} seconds{1}", _args.phraseDuration.TotalSeconds, Environment.NewLine);
         prints.text = builder.ToString();
-        Services.Instance.GetService<IEvents>().TriggerEvent(_args.text);
+
+        if(!SharedStates.isGameOver)
+            Services.Instance.GetService<IEvents>().TriggerEvent(_args.text);
 
 
         Debug.Log(_args.text);

@@ -4,11 +4,14 @@ using UnityEngine;
 public class GameUICanvas : MonoBehaviour
 {
     [SerializeField] private Button OnStartButton;
+    [SerializeField] private Button OnResetButton;
     [SerializeField] private RectTransform InformationHolderTransform;
+    [SerializeField] private RectTransform ResetInformationTransform;
 
     private void Start()
     {
         OnStartButton.onClick.AddListener(OnStartGame);
+        OnResetButton.onClick.AddListener(OnReset);
         Services.Instance.GetService<IEvents>().RegisterEvent("OnGameOver", OnGameOver);
 
     }
@@ -25,15 +28,12 @@ public class GameUICanvas : MonoBehaviour
 
     public void OnGameOver()
     {
-        OnStartButton.onClick.RemoveAllListeners();
-        OnStartButton.onClick.AddListener(OnResetGame);
-        LeanTween.scale(InformationHolderTransform, Vector3.one, .2f).setEaseInCirc();
+        LeanTween.scale(ResetInformationTransform, Vector3.one, .2f).setEaseInCirc();
     }
-
-    public void OnResetGame()
+    public void OnReset()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        LeanTween.scale(ResetInformationTransform, Vector3.zero, .2f).setEaseOutCirc();
+        Services.Instance.GetService<IEvents>().TriggerEvent("OnReset");
     }
-
 
 }
