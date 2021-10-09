@@ -5,10 +5,8 @@ using UnityEngine;
 public class DataInstaller : MonoBehaviour
 {
     [SerializeField] private Delegates IDictionarySource;
-
-
-    private void Start()
+    private void Awake()
     {
-        Services.Instance.RegisterService<IEvents>(IDictionarySource);
+        Services.Instance.RegisterService<IEvents>(new Delegates());
     }
 }

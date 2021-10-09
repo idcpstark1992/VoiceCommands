@@ -2,22 +2,36 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
+using System.Linq;
 public class Delegates : IEvents
 {
    
     private Dictionary<string, UnityEvent> DictionaryHolder = new Dictionary<string, UnityEvent>();
+
+    public List<string> GetEventsKeys()
+    {
+        List<string> mToreturn = new List<string>();
+
+        foreach (var item in DictionaryHolder.Keys)
+        {
+            mToreturn.Add(item);
+        }
+        return mToreturn;
+    }
+
     public void RegisterEvent(string _EventName, UnityAction _ActionToAdd)
     {
         if(DictionaryHolder.TryGetValue(_EventName,out UnityEvent value))
         {
             value.AddListener(_ActionToAdd);
+            Debug.Log($"updatedItem  {_ActionToAdd.GetType()}  NAME=   {_EventName}  ");
         }
         else
         {
             UnityEvent MineEvent = new UnityEvent();
             MineEvent.AddListener(_ActionToAdd);
             DictionaryHolder.Add(_EventName, MineEvent);
+            Debug.Log($"added Action  {_ActionToAdd.GetType()}  NAME=   {_EventName}  ");
         }
     }
 
@@ -40,4 +54,6 @@ public class Delegates : IEvents
             value?.Invoke();
         }
     }
+
+
 }

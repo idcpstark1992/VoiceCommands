@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 public class KeyWordsRecognizerCore : MonoBehaviour
 {
-    [SerializeField] private string[] InputKeyWords;
+    
     public TMPro.TextMeshProUGUI prints;
     private KeywordRecognizer Recognizer;
 
     private void Start()
     {
-        Recognizer = new KeywordRecognizer(InputKeyWords);
+        Recognizer = new KeywordRecognizer(Services.Instance.GetService<IEvents>().GetEventsKeys().ToArray());
         Recognizer.OnPhraseRecognized += OnRecognitionWord;
         Recognizer.Start();
     }
@@ -27,6 +27,9 @@ public class KeyWordsRecognizerCore : MonoBehaviour
         builder.AppendFormat("\tTimestamp: {0}{1}", _args.phraseStartTime, Environment.NewLine);
         builder.AppendFormat("\tDuration: {0} seconds{1}", _args.phraseDuration.TotalSeconds, Environment.NewLine);
         prints.text = builder.ToString();
+        Services.Instance.GetService<IEvents>().TriggerEvent(_args.text);
+
+
         Debug.Log(_args.text);
     }
 }

@@ -7,4 +7,9 @@ public interface IEvents
     void RegisterEvent(string _EventName ,UnityAction _ActionToAdd);
     void RemoveEvent(string _EventName, UnityAction _ActionToRemove);
     void TriggerEvent(string _eventName);
+    List<string> GetEventsKeys();
+}
+public interface IVoiceCommand
+{
+    void AddCommandToExecute(UnityAction unityEvent);
 }
